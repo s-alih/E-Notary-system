@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import { ethers } from "ethers";
 import { useMetamask } from "./api/components/context/metamsk.context";
-import { ABI } from "./LazyNFT.js";
+import { ABI } from "./api/components/context/LazyNFT.js";
 const faunadb = require("faunadb");
 
 const q = faunadb.query;
@@ -28,195 +28,201 @@ const client = new faunadb.Client({
 });
 
 function Card({ key, singlenft }) {
-  console.log("NFT details", singlenft);
-  const refId = singlenft.ref.value.id;
-  singlenft = singlenft.data.metadata;
-  const ethValue = ethers.utils.formatEther(singlenft.minPrice);
-  // const { owner, name, description, collection, uri } = singlenft;
+  if (singlenft) {
+    console.log("NFT details", singlenft);
+    const refId = singlenft.ref.value.id;
+    singlenft = singlenft.data.metadata;
+    const ethValue = ethers.utils.formatEther(singlenft.minPrice);
 
-  const { provider, walletAddress, balance, chain } = useMetamask();
-  const toast = useToast();
-  const [swapTo, setSwapTo] = useState("");
-  const [swapFrom, setSwapFrom] = useState("");
-  const [buyON, setBuyOn] = useState("97");
-  const [tokenIDName, setTokenName] = useState("");
-  const [nftON, setNftON] = useState("");
-  const [signer, setSigner] = useState(null);
-  const [logo, setlogo] = useState("");
-  const [contract, setContract] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+    // const { owner, name, description, collection, uri } = singlenft;
 
-  const buyHandler = async () => {
-    if (chain?.toString() == singlenft.chainId) {
-      if (walletAddress === singlenft.owner) {
-        alert("You cant buy your own nft");
-      } else {
-        try {
-          const txReceipt = await (
-            await contract.redeem(
-              walletAddress,
-              singlenft.tokenId,
-              singlenft.minPrice.toString(),
-              singlenft.uri,
-              singlenft.name,
-              singlenft.description,
-              singlenft.signature,
-              { value: singlenft.minPrice }
-            )
-          ).wait();
-          console.log("tx", txReceipt.status);
-          if (txReceipt.status === 1) {
-            const ref = await client.query(
-              q.Delete(q.Ref(q.Collection("lazy_mint_nft_signatures"), refId))
-            );
-            console.log("Deleted Ref", ref);
-            toast({
-              title: ` WOOHOO! you bought ${tokenIDName} NFT `,
-              variant: "subtle",
-              isClosable: true,
-            });
-          }
-        } catch (error) {}
+    const { provider, walletAddress, balance, chain } = useMetamask();
+    const toast = useToast();
+    const [swapTo, setSwapTo] = useState("");
+    const [swapFrom, setSwapFrom] = useState("");
+    const [buyON, setBuyOn] = useState("97");
+    const [tokenIDName, setTokenName] = useState("");
+    const [nftON, setNftON] = useState("");
+    const [signer, setSigner] = useState(null);
+    const [logo, setlogo] = useState("");
+    const [contract, setContract] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
-        // let timer1 = setTimeout(() => loadMarketplaceItems(), 2000);
-      }
-    } else {
-      const chainString = "";
-      if (singlenft.chainId === "4") {
-        chainString = "Rinkbey Tesnet";
-      } else if (singlenft.chainId === "97") {
-        chainString = "Binance Smart Chain Testnet";
-      } else {
-        chainString = "Mumbai Testnet";
-      }
-      alert(`Switch your metamask to ${chainString} to buy this NFT on chain`);
-    }
-  };
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      if (walletAddress) {
-        const signer = provider?.getSigner();
-        const tokenNameID = singlenft.name + "#" + singlenft.tokenId;
-        setTokenName(tokenNameID);
-
-        if (signer) {
-          let marketplace;
-          if (chain?.toString() == "4") {
-            marketplace = new ethers.Contract(
-              "0xe466f8671fcff36a910fa75fa0713b3172df359b",
-              ABI,
-              signer
-            );
-          } else if (chain?.toString() == "97") {
-            marketplace = new ethers.Contract(
-              "0x6cd7fE9D0f79845981A4C138E52c4ff3Ae011616",
-              ABI,
-              signer
-            );
-          } else {
-            marketplace = new ethers.Contract(
-              "0x85f01C6D86fa1aBe4b0E55BC9e43396EE1cfbb01",
-              ABI,
-              signer
-            );
-          }
-
-          setContract(marketplace);
-          setLoading(false);
-        }
-        if (singlenft.chainId === "4") {
-          setNftON("ETHEREUM");
-          setlogo("https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022");
-        } else if (singlenft.chainId === "97") {
-          setNftON("BINANCE SMART CHAIN");
-          setlogo("https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=022");
+    const buyHandler = async () => {
+      if (chain?.toString() == singlenft.chainId) {
+        if (walletAddress === singlenft.owner) {
+          alert("You cant buy your own nft");
         } else {
-          setNftON("POLYGON");
-          setlogo("https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022");
+          try {
+            const txReceipt = await (
+              await contract.redeem(
+                walletAddress,
+                singlenft.tokenId,
+                singlenft.minPrice.toString(),
+                singlenft.uri,
+                singlenft.name,
+                singlenft.description,
+                singlenft.signature,
+                { value: singlenft.minPrice }
+              )
+            ).wait();
+            console.log("tx", txReceipt.status);
+            if (txReceipt.status === 1) {
+              const ref = await client.query(
+                q.Delete(q.Ref(q.Collection("lazy_mint_nft_signatures"), refId))
+              );
+              console.log("Deleted Ref", ref);
+              toast({
+                title: ` WOOHOO! you bought ${tokenIDName} NFT `,
+                variant: "subtle",
+                isClosable: true,
+              });
+            }
+          } catch (error) {}
+
+          // let timer1 = setTimeout(() => loadMarketplaceItems(), 2000);
         }
-        setSigner(signer);
+      } else {
+        const chainString = "";
+        if (singlenft.chainId === "4") {
+          chainString = "Rinkbey Tesnet";
+        } else if (singlenft.chainId === "97") {
+          chainString = "Binance Smart Chain Testnet";
+        } else {
+          chainString = "Mumbai Testnet";
+        }
+        alert(
+          `Switch your metamask to ${chainString} to buy this NFT on chain`
+        );
       }
     };
-    fetchData();
-  }, [walletAddress, provider]);
 
-  return (
-    <Stack>
-      <Box
-        role={"group"}
-        p={6}
-        maxW={"330px"}
-        w={"full"}
-        bg={useColorModeValue("white", "gray.800")}
-        boxShadow={"2xl"}
-        rounded={"lg"}
-        zIndex={1}
-      >
+    React.useEffect(() => {
+      const fetchData = async () => {
+        if (walletAddress) {
+          const signer = provider?.getSigner();
+          const tokenNameID = singlenft.name + "#" + singlenft.tokenId;
+          setTokenName(tokenNameID);
+
+          if (signer) {
+            let marketplace;
+            if (chain?.toString() == "4") {
+              marketplace = new ethers.Contract(
+                "0xe466f8671fcff36a910fa75fa0713b3172df359b",
+                ABI,
+                signer
+              );
+            } else if (chain?.toString() == "97") {
+              marketplace = new ethers.Contract(
+                "0x6cd7fE9D0f79845981A4C138E52c4ff3Ae011616",
+                ABI,
+                signer
+              );
+            } else {
+              marketplace = new ethers.Contract(
+                "0x85f01C6D86fa1aBe4b0E55BC9e43396EE1cfbb01",
+                ABI,
+                signer
+              );
+            }
+
+            setContract(marketplace);
+            setLoading(false);
+          }
+          if (singlenft.chainId === "4") {
+            setNftON("ETHEREUM");
+            setlogo("https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022");
+          } else if (singlenft.chainId === "97") {
+            setNftON("BINANCE SMART CHAIN");
+            setlogo("https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=022");
+          } else {
+            setNftON("POLYGON");
+            setlogo(
+              "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=022"
+            );
+          }
+          setSigner(signer);
+        }
+      };
+      fetchData();
+    }, [walletAddress, provider]);
+
+    return (
+      <Stack>
         <Box
+          role={"group"}
+          p={6}
+          maxW={"330px"}
+          w={"full"}
+          bg={useColorModeValue("white", "gray.800")}
+          boxShadow={"2xl"}
           rounded={"lg"}
-          mt={-10}
-          pos={"relative"}
-          height={"230px"}
-          _after={{
-            transition: "all .3s ease",
-            content: '""',
-            w: "full",
-            h: "full",
-            pos: "absolute",
-            top: 5,
-            left: 0,
-            backgroundImage: singlenft.image,
-            filter: "blur(15px)",
-            zIndex: -1,
-          }}
-          _groupHover={{
-            _after: {
-              filter: "blur(20px)",
-            },
-          }}
+          zIndex={1}
         >
-          <Image
+          <Box
             rounded={"lg"}
-            height={230}
-            width={282}
-            objectFit={"cover"}
-            src={singlenft.image}
-          />
-        </Box>
-        <Heading
-          pt={"8px"}
-          textAlign={"center"}
-          fontSize={"2xl"}
-          color={"black"}
-          fontFamily={"body"}
-          fontWeight={500}
-        >
-          {tokenIDName}
-        </Heading>
+            mt={-10}
+            pos={"relative"}
+            height={"230px"}
+            _after={{
+              transition: "all .3s ease",
+              content: '""',
+              w: "full",
+              h: "full",
+              pos: "absolute",
+              top: 5,
+              left: 0,
+              backgroundImage: singlenft.image,
+              filter: "blur(15px)",
+              zIndex: -1,
+            }}
+            _groupHover={{
+              _after: {
+                filter: "blur(20px)",
+              },
+            }}
+          >
+            <Image
+              rounded={"lg"}
+              height={230}
+              width={282}
+              objectFit={"cover"}
+              src={singlenft.image}
+            />
+          </Box>
+          <Heading
+            pt={"8px"}
+            textAlign={"center"}
+            fontSize={"2xl"}
+            color={"black"}
+            fontFamily={"body"}
+            fontWeight={500}
+          >
+            {tokenIDName}
+          </Heading>
 
-        <Text
-          pt={"10px"}
-          textAlign={"center"}
-          color={"black.500"}
-          textTransform={"uppercase"}
-          fontSize={"2xl"}
-        >
-          {singlenft.description}
-        </Text>
+          <Text
+            pt={"10px"}
+            textAlign={"center"}
+            color={"black.500"}
+            textTransform={"uppercase"}
+            fontSize={"2xl"}
+          >
+            {singlenft.description}
+          </Text>
 
-        <Text
-          pt={"4px"}
-          color={"black"}
-          textAlign={"center"}
-          fontWeight={800}
-          fontSize={"xl"}
-        >
-          {singlenft.price}
-        </Text>
+          <Text
+            pt={"4px"}
+            color={"black"}
+            textAlign={"center"}
+            fontWeight={800}
+            fontSize={"xl"}
+          >
+            {singlenft.price}
+          </Text>
 
-        <Center>
-          {/* <Select
+          <Center>
+            {/* <Select
             placeholder=""
             borderColor={"purple.200"}
             color={"black"}
@@ -235,41 +241,42 @@ function Card({ key, singlenft }) {
             <option value="80001"> POLYGON </option>
             <option value="97"> BINANCE SMART CHAIN </option>
           </Select> */}
-          <Text
-            pt={"4px"}
-            color={"black"}
-            textAlign={"center"}
-            fontWeight={800}
-            fontSize={"xl"}
-          >
-            {nftON}
-          </Text>
-        </Center>
-        <Center>
-          <Flex justifyContent={"center"}>
             <Text
-              pt={"5px"}
+              pt={"4px"}
+              color={"black"}
               textAlign={"center"}
               fontWeight={800}
               fontSize={"xl"}
-              color={"purple.500"}
             >
-              {ethValue}
-              {/* {nativeCrypto}  */}
+              {nftON}
             </Text>
-            <Image w={"15px"} ml={"10px"} src={logo} />
-          </Flex>
-        </Center>
+          </Center>
+          <Center>
+            <Flex justifyContent={"center"}>
+              <Text
+                pt={"5px"}
+                textAlign={"center"}
+                fontWeight={800}
+                fontSize={"xl"}
+                color={"purple.500"}
+              >
+                {ethValue}
+                {/* {nativeCrypto}  */}
+              </Text>
+              <Image w={"15px"} ml={"10px"} src={logo} />
+            </Flex>
+          </Center>
 
-        <Center>
-          <Button mt={"5%"} bg={"purple.800"} onClick={buyHandler}>
-            {" "}
-            <Text color={"white"}> BUY </Text>{" "}
-          </Button>
-        </Center>
-      </Box>
-    </Stack>
-  );
+          <Center>
+            <Button mt={"5%"} bg={"purple.800"} onClick={buyHandler}>
+              {" "}
+              <Text color={"white"}> BUY </Text>{" "}
+            </Button>
+          </Center>
+        </Box>
+      </Stack>
+    );
+  }
 }
 
 export default Card;

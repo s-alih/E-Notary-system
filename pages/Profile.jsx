@@ -36,7 +36,11 @@ import { useMetamask } from "./api/components/context/metamsk.context";
 import Navbar from "./api/components/Navbar";
 import axios from "axios";
 import { ethers } from "ethers";
-import { ABI } from "./LazyNFT.js";
+
+import { MARKETPLACE_ABI } from "./api/components/context/MarketplaceABI.js";
+import { BRDIGE_ABI } from "./api/components/context/CrossChainNFTBridge.js";
+
+import { ABI } from "./api/components/context/LazyNFT.js";
 
 const faunadb = require("faunadb");
 
@@ -405,16 +409,21 @@ const Profile = () => {
                         bgColor={"#1F0942"}
                       >
                         <Flex justifyContent={"center"} wrap={"wrap"}>
-                          {nfts.map((nft, index) => {
-                            return (
-                              <Link>
-                                {" "}
-                                <Box marginTop={"50px"} marginLeft={"20px"}>
-                                  <ItemNFTCard key={index} singlenft={nft} />
-                                </Box>
-                              </Link>
-                            );
-                          })}
+                          {nfts
+                            ? nfts.map((nft, index) => {
+                                return (
+                                  <Link>
+                                    {" "}
+                                    <Box marginTop={"50px"} marginLeft={"20px"}>
+                                      <ItemNFTCard
+                                        key={index}
+                                        singlenft={nft}
+                                      />
+                                    </Box>
+                                  </Link>
+                                );
+                              })
+                            : ""}
                         </Flex>
                       </Flex>
                     </Flex>
@@ -438,16 +447,21 @@ const Profile = () => {
                       bgColor={"#1F0942"}
                     >
                       <Flex justifyContent={"center"} wrap={"wrap"}>
-                        {listednfts.map((nft, index) => {
-                          return (
-                            <Link>
-                              {" "}
-                              <Box marginTop={"50px"} marginLeft={"20px"}>
-                                <ListedNFTCard key={index} singlenft={nft} />
-                              </Box>
-                            </Link>
-                          );
-                        })}
+                        {listednfts
+                          ? listednfts.map((nft, index) => {
+                              return (
+                                <Link>
+                                  {" "}
+                                  <Box marginTop={"50px"} marginLeft={"20px"}>
+                                    <ListedNFTCard
+                                      key={index}
+                                      singlenft={nft}
+                                    />
+                                  </Box>
+                                </Link>
+                              );
+                            })
+                          : ""}
                       </Flex>
                     </Flex>
                   </Flex>
