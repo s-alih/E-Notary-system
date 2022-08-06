@@ -4,6 +4,8 @@ import ipfsClient from "ipfs-http-client";
 import { useMetamask } from "../pages/api/components/context/metamsk.context";
 import {abi as ABI} from "../Constants/abi"
 import { ethers } from "ethers";
+import { Box } from "@chakra-ui/react";
+
 const ipfs = ipfsClient({
   host: "ipfs.infura.io",
   port: 5001,
@@ -128,12 +130,16 @@ const FileUpload = () => {
 
   return (
     <>
+    <Box className="container" bgColor={white} drop boxShadow={false}> 
+      <Box> 
       <button
-        className="bg-red-800  text-white py-2 px-2 rounded w-40 text-center font-semibold"
+        className="bg-blue-400 text-white py-2 px-2 rounded w-40 text-center font-semibold"
         onClick={openModal}
       >
         FileUpload
       </button>
+      </Box>
+      
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -154,8 +160,11 @@ const FileUpload = () => {
           <button onClick={uploadIpfs}> Upload</button>
         </div>
       </Modal>
+      </Box>
+      
 
      
+
     </>
   );
 };
