@@ -12,6 +12,7 @@ import {
   Stack,
   Button,
   useColorModeValue,
+  Wrap, WrapItem
 } from "@chakra-ui/react";
 import FileUpload from "../Components/FileUpload";
 import Navbar from "../Components/Navbar";
@@ -51,14 +52,21 @@ const dashboard = () => {
               signer
             );
             const notaries = [];
+          
             const userAssociatedNotaryIds = await marketplace.getUserIds(
               walletAddress
             );
             console.log(userAssociatedNotaryIds);
             for (let i = 0; i < userAssociatedNotaryIds.length; i++) {
               const id = userAssociatedNotaryIds[i].toString();
+              console.log(id);
               const notary = await marketplace.notaries(id);
-              notaries.push(notary);
+              const objNotary = {}
+              objNotary.notaryid=id;
+              objNotary.notary = notary
+
+
+              notaries.push(objNotary);
             }
             console.log("Notaries: " + JSON.stringify(notaries));
             setNotaries(notaries);
@@ -79,15 +87,20 @@ const dashboard = () => {
       <Navbar />
 
       <div>
-        <div className="grid grid-rows-3 min-w-[130vw] h-[100vh]">
+        <div className="grid grid-rows-3  w-[100vw] h-[100vh]">
           {/* <div className="grid grid-cols-3 bg-white text-center justify-center"></div> */}
 
-          <div className=" my-36 p-4 justify-center flex flex-wrap-row gap-16 mb-10">
+          <div className=" my-36 p-4 justify-center flex flex-wrap gap-16 mb-10">
             {/* {notaries.map((i,sub)=>notaries.map((sub, z)=>{<div>}))}
              */}
+             <Wrap>
             {notaries.map(function (sub) {
+              const id =sub.notaryid
+              sub = sub.notary
               return (
+                <WrapItem>
                 <Card
+                  notaryid = {id}
                   arb={sub[1]}
                   party1={sub[2]}
                   party2={sub[3]}
@@ -102,8 +115,10 @@ const dashboard = () => {
 
                   isExpired={sub[11]} 
                 />
+              </WrapItem>
               );
             })}
+            </Wrap>
           </div>
           <div>
 
