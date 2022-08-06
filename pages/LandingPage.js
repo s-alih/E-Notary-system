@@ -51,7 +51,7 @@ export default function Homepage() {
           padding={"20px"}
         >
           <Link
-            href="./LazyMarketplace"
+            href="./dashboard"
             pl={"70px"}
             pr={"60px"}
             variant={"unstyled"}
@@ -63,7 +63,7 @@ export default function Homepage() {
             DashBoard
           </Link>
           <Link
-            href="./NFTMarketplace"
+            href="./upload"
             pl={"70px"}
             pr={"60px"}
             variant={"unstyled"}
@@ -118,7 +118,7 @@ export default function Homepage() {
             />
           </Flex>
 
-          <Flex width={"50%"} height={{ md: "57%" }} mt={"80px"} ml={"110px"}>
+          <Flex width={"50%"} height={{ md: "47%" }}  mt={"80px"} ml={"110px"}>
             <Box
               boxShadow="inner"
               p="6"
@@ -127,15 +127,35 @@ export default function Homepage() {
               dropShadow={"md"}
               width={"fit-content"}
               height={"fit-content"}
+              zIndex={1000}
             >
-              <Image src="https://s8.gifyu.com/images/WhatsApp-Video-2022-06-09-at-9.06.07-PM9d0aee11c2a7e0d3.gif" />
+              <Image src="https://s4.gifyu.com/images/94d063c6e79fbe19164c99b05fdb8ca3.gif"  />
             </Box>
+          </Flex>
+          <Flex width={"50%"} height={{ md: "37%" }} mb={"50px"}>
+            <Box>
+             
+              <Blur
+                position={"absolute"}
+               
+                right={-10}
+                style={{ filter: "blur(70px)" }}
+              />
+            </Box>
+
+            <Blur
+              position={"absolute"}
+              bottom={-5}
+              right={-10}
+              style={{ filter: "blur(70px)" }}
+            />
           </Flex>
         </Flex>
       </Flex>
     </>
   );
 }
+
 
 export const Blur = (props, IconProps) => {
   return (

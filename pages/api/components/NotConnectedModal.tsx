@@ -13,6 +13,7 @@ import { useDisclosure } from "@chakra-ui/react";
 import { useMetamask } from "./context/metamsk.context";
 import { METAMASK_LOGO } from "./context/constant";
 import { WALLETC_LOGO } from "./context/constant";
+import Router from "next/router";
 
 const NotConnectedModal = () => {
   const { connectMetamask, connectWalletconnect } = useMetamask();
@@ -21,7 +22,7 @@ const NotConnectedModal = () => {
   return (
     <>
       <Button
-      size={"lg"}
+        size={"lg"}
         bgGradient={[
           "linear(to-tr, white, yellow.400)",
           "linear(to-t, blue.200, teal.100)",
