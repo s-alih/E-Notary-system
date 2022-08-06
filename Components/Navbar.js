@@ -15,11 +15,11 @@ const Navbar = () => {
   } = useMetamask();
 
   return (
-    <nav className="mt-24">
-      <div className="menu">
+    <nav className="mt-24 bg-gradient-to-tr from-emerald-200 via-white to-pink-100">
+      <div class="menu">
         <input type="checkbox" id="check" />
-        <div className="logo">
-          <a href="#">TeamOne</a>
+        <div class="logo">
+          <a href="#">BlocuSign</a>
         </div>
         <ul>
           <label className="btn cancel" >

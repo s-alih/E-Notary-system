@@ -21,6 +21,44 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const register = () => {
   const {
+    isWalletConnected,
+    walletAddress,
+    chain,
+    currentWallet,
+    connectMetamask,
+    provider,
+  } = useMetamask();
+  React.useEffect(() => {
+    connectMetamask();
+  }, []);
+
+  const [contract, setContract] = useState(undefined);
+  const [signer, setSigner] = useState(null);
+  const [notaries, setNotaries] = useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      if (walletAddress) {
+        const signer = provider?.getSigner();
+        let marketplace;
+        console.log(chain.toString());
+        if (signer) {
+          if (chain?.toString() == "42") {
+            marketplace = new ethers.Contract(
+              "0x598354734EfE24005e00a9c44dc7d04266546E32",
+              ABI,
+              signer
+            );
+          }
+        }
+        setContract(marketplace);
+        setSigner(signer);
+      }
+    };
+    fetchData();
+  }, [walletAddress, provider]);
+
+  const {
     register,
     handleSubmit,
     watch,
