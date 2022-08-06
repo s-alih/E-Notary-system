@@ -1,0 +1,118 @@
+export  const abi = [
+  { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+  {
+    anonymous: false,
+    inputs: [
+      { indexed: false, internalType: "string", name: "uri", type: "string" },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "arbitraror",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "first_party",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "second_party",
+        type: "address",
+      },
+    ],
+    name: "NotrayStored",
+    type: "event",
+  },
+  {
+    inputs: [{ internalType: "address", name: "_arbitrator", type: "address" }],
+    name: "addArbitrator",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "arbitrarors",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_userAddress", type: "address" },
+    ],
+    name: "getUserIds",
+    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "notaries",
+    outputs: [
+      { internalType: "string", name: "uri", type: "string" },
+      { internalType: "address", name: "arbitraror", type: "address" },
+      { internalType: "address", name: "first_party", type: "address" },
+      { internalType: "address", name: "second_party", type: "address" },
+      { internalType: "bool", name: "isSigned_by_first_party", type: "bool" },
+      { internalType: "bool", name: "isSigned_by_second_party", type: "bool" },
+      { internalType: "bytes", name: "first_party_signature", type: "bytes" },
+      { internalType: "bytes", name: "second_party_signature", type: "bytes" },
+      { internalType: "uint256", name: "createdAt", type: "uint256" },
+      {
+        internalType: "uint256",
+        name: "first_party_sign_timestamp",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "second_party_sign_timestamp",
+        type: "uint256",
+      },
+      { internalType: "bool", name: "isExpired", type: "bool" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
+    outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "string", name: "_uri", type: "string" },
+      { internalType: "address", name: "_first_part", type: "address" },
+      { internalType: "address", name: "_second_party", type: "address" },
+    ],
+    name: "putNotaryOnChain",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_notaryId", type: "uint256" },
+      { internalType: "bytes", name: "signature", type: "bytes" },
+    ],
+    name: "signAndUpdateNotary",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
+    name: "userToNotaryIds",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+];
