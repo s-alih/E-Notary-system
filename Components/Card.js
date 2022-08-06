@@ -1,4 +1,6 @@
 import React from "react";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import moment from "moment";
 import {
   Box,
   Flex,
@@ -17,16 +19,28 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+function Card({
+  arb,
+  party1,
+  party2,
+  ipfs,
+  isSignParty1,
+  isSignParty2,
+  sigparty1,
+  sigparty2,
+  timeStampNotaryCreation,
+  part1SignTimeStampNotaryCreation,
+  part2SignTimeStampNotaryCreation,
 
-function Card({ add , add1, ipfs}) {
- 
-console.log(add)
-    return (
-      <Stack>
+  isExpired,
+}) {
+  return (
+    <Stack>
+  
         <Box
           role={"group"}
-          p={6}
-          maxW={"330px"}
+          p={2}
+          maxW={"600px"}
           w={"full"}
           bg={useColorModeValue("white", "gray.800")}
           boxShadow={"2xl"}
@@ -35,9 +49,10 @@ console.log(add)
         >
           <Box
             rounded={"lg"}
-            mt={-10}
+            mt={1}
             pos={"relative"}
-            height={"230px"}
+            height={"380px"}
+            ml={"94px"}
             _after={{
               transition: "all .3s ease",
               content: '""',
@@ -45,8 +60,7 @@ console.log(add)
               h: "full",
               pos: "absolute",
               top: 5,
-              left: 0,
-              backgroundImage: `https://gateway.pinata.cloud/ipfs/${ipfs}`,
+              left: 5,
               filter: "blur(15px)",
               zIndex: -1,
             }}
@@ -56,102 +70,81 @@ console.log(add)
               },
             }}
           >
-            <Image
-              rounded={"lg"}
-              height={230}
-              width={282}
-              objectFit={"cover"}
-              src="https://i.ibb.co/5nkZB3V/Pngtree-reload-icon-in-trendy-style-4823782.png"
-            />
-            
+            <iframe
+              src={`https://gateway.pinata.cloud/ipfs/${ipfs}`}
+              height={250}
+              width={400}
+              sandbox
+            ></iframe>
           </Box>
           <Heading
-            pt={"8px"}
+            mt={"28px"}
             textAlign={"center"}
             fontSize={"2xl"}
             color={"black"}
             fontFamily={"body"}
             fontWeight={500}
+          
           >
-            hdeiufh
+            E-NOTARY DETAILS
           </Heading>
-
-          <Text
-            pt={"10px"}
-            textAlign={"center"}
-            color={"black.500"}
-            textTransform={"uppercase"}
-            fontSize={"2xl"}
-          >
-            wuehsyr
-          </Text>
-
-          <Text
-            pt={"4px"}
-            color={"black"}
-            textAlign={"center"}
-            fontWeight={800}
-            fontSize={"xl"}
-          >
-            39057389
-          </Text>
-
+          <div className="grid grid-cols-2 content-center items-center  mt-4  ml-6 text-lg">
+            <div className="p-2 font-bold">
+              Party 1<div className="p-1">address: {party1}</div>
+              <div className="py-2">
+                <div>
+                  Is Signed?{" "}
+                  {isSignParty1 ? (
+                    <CheckIcon color="green.500" w={8} h={8} />
+                  ) : (
+                    <CloseIcon color="red.500" w={6} h={6} />
+                  )}
+                </div>
+              </div>
+              <div className="py-2">
+                signed At:{" "}
+                {isSignParty1
+                  ? moment
+                      .unix(part1SignTimeStampNotaryCreation.toString())
+                      .format("DD/MM/YYYY , h:mm:ss a")
+                  : "Null"}
+              </div>
+              <div>signature: {sigparty1.toString()}</div>
+            </div>
+            <div className="py-2">
+              party2
+              <div>address: {party2}</div>
+              <div>
+                Is Signed?{" "}
+                {isSignParty2 ? (
+                  <CheckIcon color="green.500" w={8} h={8} />
+                ) : (
+                  <CloseIcon color="red.500" w={6} h={6} />
+                )}
+              </div>
+              <div>
+                signed at={" "}
+                {isSignParty2
+                  ? moment
+                      .unix(part2SignTimeStampNotaryCreation.toString())
+                      .format("DD/MM/YYYY , h:mm:ss a")
+                  : "0"}
+              </div>
+              <div>signature: {sigparty2.toString()}</div>
+            </div>
+          </div>
+          <Center>Notary:{arb}</Center>
           <Center>
-            {/* <Select
-            placeholder=""
-            borderColor={"purple.200"}
-            color={"black"}
-            bg={"purple.100"}
-            fontSize={"xl"}
-            fontWeight={"bold"}
-            width={"160px"}
-            pt={"9%"}
-            borderRadius={"10px"}
-            // value={swapFrom}
-            onChange={(e) => {
-              setBuyOn(e.target.value);
-            }}
-          >
-            <option value="4"> ETHEREUM </option>
-            <option value="80001"> POLYGON </option>
-            <option value="97"> BINANCE SMART CHAIN </option>
-          </Select> */}
-            <Text
-              pt={"4px"}
-              color={"black"}
-              textAlign={"center"}
-              fontWeight={800}
-              fontSize={"xl"}
-            >
-
-            </Text>
+            E-Notary Creation Timestamp:{" "}
+            {moment
+              .unix(timeStampNotaryCreation.toString())
+              .format("DD/MM/YYYY , h:mm:ss a")}
           </Center>
-          <Center>
-            <Flex justifyContent={"center"}>
-              <Text
-                pt={"5px"}
-                textAlign={"center"}
-                fontWeight={800}
-                fontSize={"xl"}
-                color={"purple.500"}
-              >
-                
-                {/* {nativeCrypto}  */}
-              </Text>
-              {/* <Image w={"15px"} ml={"10px"} src={logo} /> */}
-            </Flex>
-          </Center>
-
-          <Center>
-            {/* <Button mt={"5%"} bg={"purple.800"} onClick={buyHandler}> */}
-              {" "}
-              <Text color={"white"}> BUY </Text>{" "}
-            {/* </Button> */}
-          </Center>
+         <Center>{ !isSignParty1|| !isSignParty2?<button>Sign </button>:null}</Center>
         </Box>
-      </Stack>
-    );
-  }
-
+      
+    </Stack>
+  );
+}
 
 export default Card;

@@ -74,26 +74,39 @@ const dashboard = () => {
   // console.log(notaries[0];
   console.log("provider", provider);
   return (
-    <> 
-    {/* <Card key={key} party1Add={i[1]} party2Add={i[2] } ipfs={i[0]} party1Sign={i[4]} party2Sign={5}  /> */}
+    <>
+      {/* <Card key={key} party1Add={i[1]} party2Add={i[2] } ipfs={i[0]} party1Sign={i[4]} party2Sign={5}  /> */}
       <Navbar />
 
       <div>
-        <div className="grid grid-rows-3 w-[100vw] h-[100vh]">
-          <div className="grid grid-cols-3 bg-white h-1/4 text-center justify-center"></div>
+        <div className="grid grid-rows-3 min-w-[130vw] h-[100vh]">
+          {/* <div className="grid grid-cols-3 bg-white text-center justify-center"></div> */}
 
-          <div className=" m-8 p-4 justify-between flex flex-wrap-row">
-           {/* {notaries.map((i,sub)=>notaries.map((sub, z)=>{<div>}))}
-            */}
-            {notaries.map(function(sub) {
-  
-    return <Card add={sub[1]}  add1={sub[2]} ipfs={sub[0]}/>
-    
-    
-    })
-  
-  }
-            
+          <div className=" my-36 p-4 justify-center flex flex-wrap-row gap-16 mb-10">
+            {/* {notaries.map((i,sub)=>notaries.map((sub, z)=>{<div>}))}
+             */}
+            {notaries.map(function (sub) {
+              return (
+                <Card
+                  arb={sub[1]}
+                  party1={sub[2]}
+                  party2={sub[3]}
+                  ipfs={sub[0]}
+                  isSignParty1={sub[4]}
+                  isSignParty2={sub[5]}
+                  sigparty1={sub[6]}
+                  sigparty2={sub[7]}
+                  timeStampNotaryCreation={sub[8]}
+                  part1SignTimeStampNotaryCreation={sub[9]}
+                  part2SignTimeStampNotaryCreation={sub[10]}
+
+                  isExpired={sub[11]} 
+                />
+              );
+            })}
+          </div>
+          <div>
+
           </div>
         </div>
       </div>
