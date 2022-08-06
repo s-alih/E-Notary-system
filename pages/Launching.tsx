@@ -28,10 +28,10 @@ const Launch = () => {
         backgroundRepeat={"no-repeat"}
         backgroundSize={"cover"}
         width={"120vw"}
-        height={"200vh"}
+        height={"00vh"}
         flexDirection={"column"}
       >
-        <Flex flexDirection={"row"} height={"150vh"} wrap={"wrap"}>
+        <Flex flexDirection={"row"} height={"450vh"} wrap={"wrap"}>
           <Flex width={"30%"}>
             <Text
               bgGradient="linear(to-l, purple.800, purple.200)"

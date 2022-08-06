@@ -16,14 +16,14 @@ const Navbar = () => {
 
   return (
     <nav className="mt-24">
-      <div class="menu">
+      <div className="menu">
         <input type="checkbox" id="check" />
-        <div class="logo">
+        <div className="logo">
           <a href="#">TeamOne</a>
         </div>
         <ul>
-          <label class="btn cancel" for="check">
-            <i class="fas fa-times"></i>
+          <label className="btn cancel" >
+            <i className="fas fa-times"></i>
           </label>
 
           <li>

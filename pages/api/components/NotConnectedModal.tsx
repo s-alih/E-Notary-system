@@ -21,10 +21,11 @@ const NotConnectedModal = () => {
   return (
     <>
       <Button
+      size={"lg"}
         bgGradient={[
-          "linear(to-tr, teal.300, yellow.400)",
-          "linear(to-t, blue.200, teal.500)",
-          "linear(to-b, orange.100, purple.800)",
+          "linear(to-tr, white, yellow.400)",
+          "linear(to-t, blue.200, teal.100)",
+          "linear(to-b, orange.100, teal.200)",
         ]}
         onClick={onOpen}
       >
