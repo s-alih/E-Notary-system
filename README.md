@@ -53,3 +53,8 @@ To deploy this project run
 
 ![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
+
+Smart contract Repo
+
+https://github.com/s-alih/Notary-Contracts
+
